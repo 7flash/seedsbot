@@ -10,11 +10,10 @@ module.exports = fp(function (fastify, opts, next) {
 
   fastify.decorate('sendTelegramMessage', function (title, body, image, account) {
     const message = `\n
-      #gooddeed by ${account} \n
-      *${title}* \n
-
-      ${body} \n
-    `
+#gooddeed by ${account} \n
+*${title}*
+${body} \n
+`
 
     telegram.sendPhoto(chatId, image, { caption: message, "contentType": "image/png", parse_mode: "Markdown" } ).catch(err => { console.error(err) })
   })
