@@ -7,10 +7,8 @@ module.exports = function (fastify, opts, next) {
 
   fastify.post('/', function (request, reply) {
     try {
-      const body = JSON.parse(request.body)
+      const body = typeof request.body == 'object' ? request.body : JSON.parse(request.body)
     
-      console.log(body)
-
       const messageTitle = body['title']
       const messageBody = body['partial_body']
       const messageImage = body['image']
