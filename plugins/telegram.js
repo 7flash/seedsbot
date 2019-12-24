@@ -9,13 +9,18 @@ module.exports = fp(function (fastify, opts, next) {
   const telegram = new TelegramBot(token, { polling: false })
 
   fastify.decorate('sendTelegramMessage', function (title, body, image, account) {
-    const message = `\n
-#gooddeed by ${account} \n
-*${title}*
-${body} \n
-`
+    const message = `#gooddeed by ${account} \n\n *${title}* \n ${body}`
 
-    telegram.sendPhoto(chatId, image, { caption: message, "contentType": "image/png", parse_mode: "Markdown" } ).catch(err => { console.error(err) })
+    return telegram.sendPhoto(
+      chatId,
+      image,
+      {
+        caption: message,
+        "contentType": "image/png",
+        parse_mode: "Markdown"
+      }
+    ).catch(err => { console.error(err) })
   })
+
   next()
 })

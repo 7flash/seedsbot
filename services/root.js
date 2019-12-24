@@ -5,7 +5,7 @@ module.exports = function (fastify, opts, next) {
     reply.send({ root: true })
   })
 
-  fastify.post('/', function (request, reply) {
+  fastify.post('/', async function (request, reply) {
     try {
       const body = typeof request.body == 'object' ? request.body : JSON.parse(request.body)
     
@@ -14,16 +14,17 @@ module.exports = function (fastify, opts, next) {
       const messageImage = body['image']
       const messageAccount = body['account_name']
       
-      fastify.sendTelegramMessage(messageTitle, messageBody, messageImage, messageAccount)
+      await fastify.sendTelegramMessage(messageTitle, messageBody, messageImage, messageAccount)
   
       reply.send({
         success: true
       })
-    } catch (err) {
-      console.error(err)
+    } catch (error) {
+      console.error(error)
 
       reply.send({
-        success: false
+        success: false,
+        error
       })
     }
   })
